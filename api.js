@@ -29,7 +29,6 @@ const fromDataHomeList = $ => {
 
 const fromDataInnerList = $ => {
   
-  let data = []
   let obj = {}
   obj.content = [] //内容列表
   obj.sort = [] // 分类
@@ -67,8 +66,7 @@ const fromDataInnerList = $ => {
     rowChild.time = $(this).find(".otherinfo").text()
     obj.content.push(rowChild)
   })
-  data.push(obj)
-  return data
+  return obj
 }
 
 module.exports = {
