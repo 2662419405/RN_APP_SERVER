@@ -4,10 +4,9 @@ var cheerio = require('cheerio')
 var iconv = require('iconv-lite')
 const express = require('express')
 const app = express()
-const { fromDataHomeList,fromDataInnerList } = require('./api')
+const { fromDataHomeList, fromDataInnerList } = require('./api')
 
 var url = 'http://www.613767.com'
-var innerurl = 'http://www.613767.com/type/1.html'
 
 app.get('/homeList', function (req, response) {
   http
@@ -21,7 +20,7 @@ app.get('/homeList', function (req, response) {
       res.on('end', function () {
         var chunk = iconv.decode(Buffer.concat(datas), 'utf-8')
         var $ = cheerio.load(chunk, { decodeEntities: false })
-        var htmlListData = fromDataHomeList($);
+        var htmlListData = fromDataHomeList($)
         response.json(htmlListData)
       })
     })
@@ -30,10 +29,10 @@ app.get('/homeList', function (req, response) {
     })
 })
 
-
 app.get('/innerList', function (req, response) {
+  var params = req.query
   http
-    .get(innerurl, function (res) {
+    .get(url + params.url, function (res) {
       var datas = []
       // 获取页面数据
       res.on('data', function (data) {
@@ -43,7 +42,7 @@ app.get('/innerList', function (req, response) {
       res.on('end', function () {
         var chunk = iconv.decode(Buffer.concat(datas), 'utf-8')
         var $ = cheerio.load(chunk, { decodeEntities: false })
-        var htmlListData = fromDataInnerList($);
+        var htmlListData = fromDataInnerList($)
         response.json(htmlListData)
       })
     })
@@ -52,6 +51,6 @@ app.get('/innerList', function (req, response) {
     })
 })
 
-app.listen(3005,()=>{
-    console.log("服务器启动在3005端口上")
+app.listen(3005, () => {
+  console.log('服务器启动在3005端口上')
 })
